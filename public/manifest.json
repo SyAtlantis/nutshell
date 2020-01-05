@@ -1,0 +1,15 @@
+{
+  "short_name": "NUTSHELL WebUI",
+  "name": "NUTSHELL Web UI",
+  "icons": [
+     {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#0b3a53",
+  "background_color": "#0b3a53"
+}

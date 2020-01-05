@@ -4,7 +4,7 @@ import { translate } from 'react-i18next'
 
 class MyForm extends React.Component {
   state = {
-    issue_date: '1111',
+    issue_date: '',
     bill_due_date: '',
     bill_state: '',
     bill_no: '',
@@ -43,35 +43,39 @@ class MyForm extends React.Component {
     }
   }
   render () {
+    const inputTitle = {
+      width: '160px',
+      display: 'inline-block'
+    }
     return (
       <div>
-        <div><span>出票日期：</span><input type="text" onChange={this.handleChange.bind(this, 'issue_date')}/></div>
-        <div>汇票到期日：<input type="text" onChange={this.handleChange.bind(this, 'bill_due_date')}/></div>
-        <div>票据状态：<input type="text" onChange={this.handleChange.bind(this, 'bill_state')}/></div>
-        <div>票据号码：<input type="text" onChange={this.handleChange.bind(this, 'bill_no')}/></div>
-        <div>出票人 全称：<input type="text" onChange={this.handleChange.bind(this, 'drawer_name')}/></div>
-        <div>出票人 账号：<input type="text" onChange={this.handleChange.bind(this, 'drawer_account')}/></div>
-        <div>出票人 开户银行：<input type="text" onChange={this.handleChange.bind(this, 'drawer_bank')}/></div>
-        <div>收票人 全称：<input type="text" onChange={this.handleChange.bind(this, 'payee_name')}/></div>
-        <div>收票人 账号：<input type="text" onChange={this.handleChange.bind(this, 'payee_account')}/></div>
-        <div>收票人 开户银行：<input type="text" onChange={this.handleChange.bind(this, 'payee_bank')}/></div>
-        <div>保证人名称：<input type="text" onChange={this.handleChange.bind(this, 'bail_name')}/></div>
-        <div>保证人地址：<input type="text" onChange={this.handleChange.bind(this, 'bail_address')}/></div>
-        <div>保证日期：<input type="text" onChange={this.handleChange.bind(this, 'bail_date')}/></div>
-        <div>人民币：<input type="text" onChange={this.handleChange.bind(this, 'money')}/></div>
-        <div>承兑人 全称：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_name')}/></div>
-        <div>承兑人 账号：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_account')}/></div>
-        <div>承兑人 开户行行号：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_bank_no')}/></div>
-        <div>承兑人 开户行名称：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_bank_name')}/></div>
-        <div>交易合同号：<input type="text" onChange={this.handleChange.bind(this, 'contract_no')}/></div>
-        <div>能否转让：<input type="text" onChange={this.handleChange.bind(this, 'is_transfer')}/></div>
-        <div>承兑日期：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_date')}/></div>
-        <div>出票人 评级主体：<input type="text" onChange={this.handleChange.bind(this, 'drawer_rate')}/></div>
-        <div>出票人 信用等级：<input type="text" onChange={this.handleChange.bind(this, 'drawer_credit')}/></div>
-        <div>出票人 评级到期日：<input type="text" onChange={this.handleChange.bind(this, 'drawer_due_date')}/></div>
-        <div>承兑人 评级主体：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_rate')}/></div>
-        <div>承兑人 信用等级：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_credit')}/></div>
-        <div>承兑人 评级到期日：<input type="text" onChange={this.handleChange.bind(this, 'acceptor_due_date')}/></div>
+        <div><div style={inputTitle}>出票日期：</div><input type="text" onChange={this.handleChange.bind(this, 'issue_date')} /></div>
+        <div><div style={inputTitle}>汇票到期日：</div><input type="text" onChange={this.handleChange.bind(this, 'bill_due_date')} /></div>
+        <div><div style={inputTitle}>票据状态：</div><input type="text" onChange={this.handleChange.bind(this, 'bill_state')} /></div>
+        <div><div style={inputTitle}>票据号码：</div><input type="text" onChange={this.handleChange.bind(this, 'bill_no')} /></div>
+        <div><div style={inputTitle}>出票人 全称：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_name')} /></div>
+        <div><div style={inputTitle}>出票人 账号：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_account')} /></div>
+        <div><div style={inputTitle}>出票人 开户银行：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_bank')} /></div>
+        <div><div style={inputTitle}>收票人 全称：</div><input type="text" onChange={this.handleChange.bind(this, 'payee_name')} /></div>
+        <div><div style={inputTitle}>收票人 账号：</div><input type="text" onChange={this.handleChange.bind(this, 'payee_account')} /></div>
+        <div><div style={inputTitle}>收票人 开户银行：</div><input type="text" onChange={this.handleChange.bind(this, 'payee_bank')} /></div>
+        <div><div style={inputTitle}>保证人名称：</div><input type="text" onChange={this.handleChange.bind(this, 'bail_name')} /></div>
+        <div><div style={inputTitle}>保证人地址：</div><input type="text" onChange={this.handleChange.bind(this, 'bail_address')} /></div>
+        <div><div style={inputTitle}>保证日期：</div><input type="text" onChange={this.handleChange.bind(this, 'bail_date')} /></div>
+        <div><div style={inputTitle}>票据金额：</div><input type="text" onChange={this.handleChange.bind(this, 'money')} /></div>
+        <div><div style={inputTitle}>承兑人 全称：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_name')} /></div>
+        <div><div style={inputTitle}>承兑人 账号：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_account')} /></div>
+        <div><div style={inputTitle}>承兑人 开户行行号：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_bank_no')} /></div>
+        <div><div style={inputTitle}>承兑人 开户行名称：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_bank_name')} /></div>
+        <div><div style={inputTitle}>交易合同号：</div><input type="text" onChange={this.handleChange.bind(this, 'contract_no')} /></div>
+        <div><div style={inputTitle}>能否转让：</div><input type="text" onChange={this.handleChange.bind(this, 'is_transfer')} /></div>
+        <div><div style={inputTitle}>承兑日期：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_date')} /></div>
+        <div><div style={inputTitle}>出票人 评级主体：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_rate')} /></div>
+        <div><div style={inputTitle}>出票人 信用等级：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_credit')} /></div>
+        <div><div style={inputTitle}>出票人 评级到期日：</div><input type="text" onChange={this.handleChange.bind(this, 'drawer_due_date')} /></div>
+        <div><div style={inputTitle}>承兑人 评级主体：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_rate')} /></div>
+        <div><div style={inputTitle}>承兑人 信用等级：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_credit')} /></div>
+        <div><div style={inputTitle}>承兑人 评级到期日：</div><input type="text" onChange={this.handleChange.bind(this, 'acceptor_due_date')} /></div>
       </div>
     )
   }

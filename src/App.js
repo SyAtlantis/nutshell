@@ -59,14 +59,14 @@ export class App extends Component {
             <NavBar />
           </div>
           <div className='flex-auto-l'>
-            <div className='flex items-center ph3 ph4-l' style={{ height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>
+            {/* <div className='flex items-center ph3 ph4-l' style={{ height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>
               <div style={{ width: '100%' }}>
-                {/* <IpldExploreForm /> */}
+                <IpldExploreForm />
               </div>
-              {/* <div className='dn db-ns flex-auto tr'>
+              <div className='dn db-ns flex-auto tr'>
                 <Connected />
-              </div> */}
-            </div>
+              </div>
+            </div> */}
             <main className='bg-white pv3 pa3-ns pa4-l'>
               { (ipfsReady || url === '/welcome' || url.startsWith('/settings'))
                 ? <Page />
