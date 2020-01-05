@@ -1,7 +1,8 @@
 import React from 'react'
 import { translate } from 'react-i18next'
 import { Helmet } from 'react-helmet'
-import Pdfkit from './Pdfkit/Pdfkit'
+// import Pdfkit from './Pdfkit'
+import EditCanvas from './EditCanvas'
 
 const PeersPage = ({ t }) => (
   <div data-id='PeersPage'>
@@ -10,7 +11,8 @@ const PeersPage = ({ t }) => (
     </Helmet>
 
     <div >
-      <Pdfkit className='pt3 ph3 pb4'/>
+      <EditCanvas/>
+      {/* <Pdfkit className='pt3 ph3 pb4'/> */}
     </div>
   </div>
 )

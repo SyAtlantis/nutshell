@@ -2,11 +2,11 @@ import React from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'redux-bundler-react'
 
-import Button from '../../components/button/Button'
+import Button from '../components/button/Button'
 import PDFDocument from '@react-pdf/pdfkit'
 import BlobStream from 'blob-stream'
-import { invoiceBgBs64 } from '../types/001map'
-// import msyh from '../fonts/msyh.ttc'
+import { invoiceBgBs64 } from './types/001map'
+// import msyh from '../fonts/Medium.ttf'
 
 // 中文乱码
 // 保存->上传
@@ -74,7 +74,7 @@ class Pdfkit extends React.Component {
         valign: 'center'
       })
       doc.fontSize(15)
-      // doc.font('msyh')
+      // doc.font('../fonts/Medium.ttf')
 
       doc.text(this.state.form['issue_date'], 100, 138)
       doc.text(this.state.form['bill_due_date'], 100, 160)
