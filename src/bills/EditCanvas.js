@@ -3,13 +3,33 @@ import React from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'redux-bundler-react'
 import Button from '../components/button/Button'
+import Tick from '../icons/GlyphSmallTick'
 import { invoiceBgBs64 } from './types/001map'
 import { filesToStreams } from '../lib/files'
 // import Canvas2Image from 'canvas2image'
 
+const SaveButton = ({ t, hasErrors, hasSaveFailed, hasSaveSucceded, hasLocalChanges, hasExternalChanges, onClick }) => {
+  const bg = hasSaveSucceded ? 'bg-green' : 'bg-aqua'
+  return (
+    <Button
+      minWidth={100}
+      height={40}
+      className='mt2 mt0-l ml2-l'
+      bg={bg}
+      disabled={!hasLocalChanges || hasErrors}
+      danger={hasSaveFailed || hasExternalChanges}
+      onClick={onClick}>
+      { hasSaveSucceded && !hasSaveFailed ? (
+        <Tick height={16} className='fill-snow' style={{ transform: 'scale(3)' }} />
+      ) : '上传'}
+    </Button>
+  )
+}
+
 class EditCanvas extends React.Component {
   state = {
     pdfurl: '',
+    hasSaveSucceded: false,
     form: {
       issue_date: '2020-01-01',
       bill_due_date: '2020-12-31',
@@ -242,23 +262,36 @@ class EditCanvas extends React.Component {
 
   upload () {
     var ctx = document.getElementById('myCanvas')
-
+    this.setState({ hasSaveSucceded: true })
     ctx.toBlob((blob) => {
       const { doFilesWrite } = this.props
 
-      blob.name = this.state.form.bill_no || new Date().getTime()
+      blob.name = (this.state.form.bill_no || new Date().toDateString()) + '.png'
       filesToStreams([blob])
         .then(result => {
           doFilesWrite('/', result)
+
+          setTimeout(() => {
+            this.setState({ hasSaveSucceded: false })
+          }, 1500)
         })
         .catch(error => {
           console.log('filetostream error:', error)
+          setTimeout(() => {
+            this.setState({ hasSaveSucceded: false })
+          }, 3000)
         })
       // console.log(blob)
     })
   }
 
+  // isRecent (msSinceEpoch) {
+  //   return msSinceEpoch > Date.now() - 3000
+  // }
+
   render () {
+    const { t, tReady } = this.props
+    // const hasSaveSucceded = this.isRecent(configSaveLastSuccess)
     const inputTitle = {
       width: '160px',
       display: 'inline-block'
@@ -301,7 +334,16 @@ class EditCanvas extends React.Component {
           </div>
           <div>
             <div className='flex justify-end mb3'>
-              <Button onClick={this.upload.bind(this)}>上传</Button>
+              {/* <Button onClick={this.upload.bind(this)}>上传</Button> */}
+              <SaveButton
+                t={t}
+                tReady={tReady}
+                hasErrors= {false}
+                hasSaveFailed={false}
+                hasSaveSucceded={this.state.hasSaveSucceded}
+                hasLocalChanges={true}
+                hasExternalChanges={false}
+                onClick={this.upload.bind(this)}/>
             </div>
             <canvas id='myCanvas' width='860' height='600'></canvas>
           </div>
