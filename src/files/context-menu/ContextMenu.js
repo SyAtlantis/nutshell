@@ -7,7 +7,7 @@ import GlyphDots from '../../icons/GlyphDots'
 import StrokeCopy from '../../icons/StrokeCopy'
 import StrokeShare from '../../icons/StrokeShare'
 import StrokePencil from '../../icons/StrokePencil'
-import StrokeIpld from '../../icons/StrokeIpld'
+// import StrokeIpld from '../../icons/StrokeIpld'
 import StrokeTrash from '../../icons/StrokeTrash'
 import StrokeDownload from '../../icons/StrokeDownload'
 
@@ -53,7 +53,7 @@ class ContextMenu extends React.Component {
   }
 
   render () {
-    const { t, onRename, onDelete, onDownload, onInspect, onShare, translateX, translateY, className, showDots, isUpperDir } = this.props
+    const { t, onRename, onDelete, onDownload, /* onInspect, */ onShare, translateX, translateY, className, showDots, isUpperDir } = this.props
 
     return (
       <Dropdown className={className}>
@@ -84,12 +84,12 @@ class ContextMenu extends React.Component {
               {t('actions.download')}
             </Option>
           }
-          { onInspect &&
+          {/* { onInspect &&
             <Option onClick={this.wrap('onInspect')}>
               <StrokeIpld className='w2 mr2 fill-aqua' />
               {t('actions.inspect')}
             </Option>
-          }
+          } */}
           <CopyToClipboard text={this.props.hash} onCopy={this.props.handleClick}>
             <Option>
               <StrokeCopy className='w2 mr2 fill-aqua' />

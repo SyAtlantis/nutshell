@@ -1,8 +1,11 @@
+/* eslint-disable use-isnan */
 import React from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'redux-bundler-react'
 import Button from '../components/button/Button'
 import { invoiceBgBs64 } from './types/001map'
+import { filesToStreams } from '../lib/files'
+// import Canvas2Image from 'canvas2image'
 
 class EditCanvas extends React.Component {
   state = {
@@ -21,20 +24,20 @@ class EditCanvas extends React.Component {
       drawer_bail_name: '王五',
       drawer_bail_address: '湖北武汉',
       drawer_bail_date: '2019-12-31',
-      money: '123456',
-      money_0: '壹贰叁肆伍陆',
-      money_1: '0',
-      money_2: '0',
-      money_3: '6',
-      money_4: '5',
-      money_5: '4',
-      money_6: '3',
-      money_7: '2',
-      money_8: '1',
-      money_9: '0',
-      money_10: '0',
-      money_11: '0',
-      money_12: '0',
+      money: '',
+      money_zh: '',
+      money_1: '',
+      money_2: '',
+      money_3: '',
+      money_4: '',
+      money_5: '',
+      money_6: '',
+      money_7: '',
+      money_8: '',
+      money_9: '',
+      money_10: '',
+      money_11: '',
+      money_12: '',
       acceptor_name: '赵六',
       acceptor_account: '48489211544202321',
       acceptor_bank_no: '96654485',
@@ -86,7 +89,7 @@ class EditCanvas extends React.Component {
       ctx.fillText(this.state.form['drawer_bail_address'], 484, 261)
       ctx.fillText(this.state.form['drawer_bail_date'], 717, 261)
 
-      ctx.fillText(this.state.form['money_0'], 200, 298)
+      ctx.fillText(this.state.form['money_zh'], 200, 298)
       ctx.fillText(this.state.form['money_12'], 538, 310)
       ctx.fillText(this.state.form['money_11'], 560, 310)
       ctx.fillText(this.state.form['money_10'], 582, 310)
@@ -130,19 +133,129 @@ class EditCanvas extends React.Component {
     for (let item in this.state.form) {
       if (item === key) {
         if (key === 'money') {
-          // let v = parseFloat(event.target.value).toFixed(2)
-          // // let zh = this.changeNumMoneyToChinese(v)
-          // form['money_0'] = this.changeNumMoneyToChinese(v)
-        } else {
-          form[item] = event.target.value
+          let v = parseFloat(event.target.value).toFixed(2)
+          form['money_zh'] = this.changeNumMoneyToChinese(v)
+
+          if (event.target.value) {
+            let s = (v * 100).toFixed(0).toString()
+            for (let i = s.length; i >= 0; i--) {
+              form['money_' + (s.length - i)] = s[i]
+            }
+          } else {
+            for (let i = 1; i <= 12; i++) {
+              form['money_' + i] = ''
+            }
+          }
+          console.log(v, form['money_zh'], (v * 100).toString())
         }
+        form[item] = event.target.value
         this.setState({ form: form })
       }
     }
   }
 
-  upload () {
+  changeNumMoneyToChinese = (money) => {
+    console.log(money)
+    // eslint-disable-next-line no-array-constructor
+    var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖') // 汉字的数字
+    // eslint-disable-next-line no-array-constructor
+    var cnIntRadice = new Array('', '拾', '佰', '仟')// 基本单位
+    // eslint-disable-next-line no-array-constructor
+    var cnIntUnits = new Array('', '万', '亿', '兆')// 对应整数部分扩展单位
+    // eslint-disable-next-line no-array-constructor
+    var cnDecUnits = new Array('角', '分', '毫', '厘')// 对应小数部分单位
+    var cnInteger = '整'// 整数金额时后面跟的字符
+    var cnIntLast = '元'// 整型完以后的单位
+    var maxNum = 999999999999999.9999// 最大处理的数字
+    var IntegerNum// 金额整数部分
+    var DecimalNum// 金额小数部分
+    var ChineseStr = ''// 输出的中文金额字符串
+    var parts// 分离金额后用的数组，预定义
+    var Symbol = ''// 正负值标记
+    if (money === '') {
+      return ''
+    }
 
+    money = parseFloat(money)
+    if (money >= maxNum) {
+      alert('超出最大处理数字')
+      return ''
+    }
+    if (money === 0) {
+      ChineseStr = cnNums[0] + cnIntLast + cnInteger
+      return ChineseStr
+    }
+    if (money < 0) {
+      money = -money
+      Symbol = '负'
+    }
+    money = money.toString()// 转换为字符串
+    if (money.indexOf('.') === -1) {
+      IntegerNum = money
+      DecimalNum = ''
+    } else {
+      parts = money.split('.')
+      IntegerNum = parts[0]
+      DecimalNum = parts[1].substr(0, 4)
+    }
+    if (parseInt(IntegerNum, 10) > 0) { // 获取整型部分转换
+      var zeroCount = 0
+      var IntLen = IntegerNum.length
+      for (var i = 0; i < IntLen; i++) {
+        var n = IntegerNum.substr(i, 1)
+        var p = IntLen - i - 1
+        var q = p / 4
+        var m = p % 4
+        if (n === '0') {
+          zeroCount++
+        } else {
+          if (zeroCount > 0) {
+            ChineseStr += cnNums[0]
+          }
+          zeroCount = 0// 归零
+          ChineseStr += cnNums[parseInt(n)] + cnIntRadice[m]
+        }
+        if (m === 0 && zeroCount < 4) {
+          ChineseStr += cnIntUnits[q]
+        }
+      }
+      ChineseStr += cnIntLast // 整型部分处理完毕
+    }
+    if (DecimalNum !== '') { // 小数部分
+      var decLen = DecimalNum.length
+      for (let i = 0; i < decLen; i++) {
+        let n = DecimalNum.substr(i, 1)
+        if (n !== '0') {
+          ChineseStr += cnNums[Number(n)] + cnDecUnits[i]
+        }
+      }
+    }
+    if (ChineseStr === '') {
+      ChineseStr += cnNums[0] + cnIntLast + cnInteger
+    } else if (DecimalNum === '') {
+      ChineseStr += cnInteger
+    }
+    ChineseStr = Symbol + ChineseStr
+
+    return ChineseStr
+  }
+
+  upload () {
+    var ctx = document.getElementById('myCanvas')
+
+    ctx.toBlob((blob) => {
+      const { doFilesWrite } = this.props
+
+      blob.name = this.state.form.bill_no || new Date().getTime()
+      filesToStreams([blob])
+        .then(result => {
+          doFilesWrite('/', result)
+        })
+        .catch(error => {
+          console.log('filetostream error:', error)
+        })
+      // console.log(blob)
+    })
   }
 
   render () {
